@@ -3,7 +3,7 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 16
 VisualStudioVersion = 16.0.30907.101
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DevFreelaV2.API", "DevFreelaV2.API\DevFreelaV2.API.csproj", "{A9AC5DD3-C5DD-4272-AABA-F2D122994FB3}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DevFreelaV2.API", "DevFreelaV2.API\DevFreelaV2.API.csproj", "{A9AC5DD3-C5DD-4272-AABA-F2D122994FB3}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
