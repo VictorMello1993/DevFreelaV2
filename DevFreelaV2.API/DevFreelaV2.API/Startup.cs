@@ -1,3 +1,4 @@
+using DevFreelaV2.API.Models;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.HttpsPolicy;
@@ -26,6 +27,14 @@ namespace DevFreelaV2.API
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
+            //Configuração da aplicação para definir o horário da requisição
+            services.Configure<OpeningTimeOption>(Configuration.GetSection("OpeningTime"));
+            
+            //Teste do mecanismo de injeção de dependência para verificar se o estado do objeto foi alterado para cada requisição através do padrão Singleton (uma instância por aplicação)
+            //services.AddSingleton<ExampleClass>(e => new ExampleClass { Name = "Initial Stage" });
+
+            //Teste do mecanismo de injeção de dependência para verificar se o estado do objeto foi alterado para cada requisição através do padrão Scoped (uma instância por requisição)
+            services.AddScoped<ExampleClass>(e => new ExampleClass { Name = "Initial Stage" });
 
             services.AddControllers();
             services.AddSwaggerGen(c =>
