@@ -1,3 +1,6 @@
+using DevFreela.Application.Services.Implementations;
+using DevFreela.Application.Services.Interfaces;
+using DevFreela.Infrastructure.Persistence;
 using DevFreelaV2.API.Models;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
@@ -29,12 +32,18 @@ namespace DevFreelaV2.API
         {
             //Configuração da aplicação para definir o horário da requisição
             services.Configure<OpeningTimeOption>(Configuration.GetSection("OpeningTime"));
-            
+
+            //-----------------------------------------------------Configuração de injeção de dependência para acesso a banco de dados em memória-----------------------------------------------------------------------------------------------------------------------
+            services.AddSingleton<DevFreelaDbContext>();
+            services.AddScoped<IProjectService, ProjectService>();
+            //----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+
             //Teste do mecanismo de injeção de dependência para verificar se o estado do objeto foi alterado para cada requisição através do padrão Singleton (uma instância por aplicação)
             //services.AddSingleton<ExampleClass>(e => new ExampleClass { Name = "Initial Stage" });
 
             //Teste do mecanismo de injeção de dependência para verificar se o estado do objeto foi alterado para cada requisição através do padrão Scoped (uma instância por requisição)
-            services.AddScoped<ExampleClass>(e => new ExampleClass { Name = "Initial Stage" });
+            //services.AddScoped<ExampleClass>(e => new ExampleClass { Name = "Initial Stage" });
 
             services.AddControllers();
             services.AddSwaggerGen(c =>
