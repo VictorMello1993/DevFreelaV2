@@ -1,4 +1,5 @@
-﻿using System;
+﻿using DevFreela.Domain.Exceptions;
+using System;
 using System.Collections.Generic;
 using System.Text;
 
@@ -28,5 +29,20 @@ namespace DevFreela.Domain.Entities
         public List<Project> OwndedProjects { get; private set; }
         public List<Project> FreelanceProjects { get; private set; }
 
+        public void Update(string email)
+        {
+            if (!Active)
+            {
+                throw new UserIsInactiveException();
+            }
+        }
+
+        public void Delete()
+        {
+            if (Active)
+            {
+                Active = false;
+            }
+        }
     }
 }

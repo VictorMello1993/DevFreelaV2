@@ -1,5 +1,7 @@
-﻿using DevFreela.Application.Services.Interfaces;
+﻿using DevFreela.Application.InputModels;
+using DevFreela.Application.Services.Interfaces;
 using DevFreela.Application.ViewModels;
+using DevFreela.Domain.Entities;
 using DevFreela.Infrastructure.Persistence;
 using System.Collections.Generic;
 using System.Linq;
@@ -21,6 +23,29 @@ namespace DevFreela.Application.Services.Implementations
             var skillsViewModel = skills.Select(p => new SkillViewModel(p.Id, p.Description)).ToList();
 
             return skillsViewModel;
+        }
+
+        public SkillViewModel GetById(int id)
+        {
+            var skill = _dbContext.Skills.SingleOrDefault(s => s.Id == id);
+
+            if(skill == null)
+            {
+                return null;
+            }
+
+            var skillViewModel = new SkillViewModel(skill.Id, skill.Description);
+
+            return skillViewModel;
+        } 
+        
+        public int Create(NewSkillInputModel inputModel)
+        {
+            var skill = new Skill(inputModel.Description);
+
+            _dbContext.Skills.Add(skill);
+
+            return skill.Id;
         }
     }
 }

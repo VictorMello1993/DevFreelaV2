@@ -34,8 +34,11 @@ namespace DevFreelaV2.API
             services.Configure<OpeningTimeOption>(Configuration.GetSection("OpeningTime"));
 
             //-----------------------------------------------------Configuração de injeção de dependência para acesso a banco de dados em memória-----------------------------------------------------------------------------------------------------------------------
-            services.AddSingleton<DevFreelaDbContext>();
+            services.AddSingleton<DevFreelaDbContext>();            
+
             services.AddScoped<IProjectService, ProjectService>();
+            services.AddScoped<ISkillService, SkillService>();
+            services.AddScoped<IUserService, UserService>();
             //----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
 

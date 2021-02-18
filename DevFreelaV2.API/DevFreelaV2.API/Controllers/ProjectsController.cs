@@ -30,9 +30,9 @@ namespace DevFreelaV2.API.Controllers
 
         //EX: api/projects?query=net core - Busca pelo query string
         [HttpGet]
-        public IActionResult Get(string query)
+        public IActionResult Get()
         {
-            var projects = _projectService.GetAll(query);
+            var projects = _projectService.GetAll();
 
             return Ok(projects);
         }
