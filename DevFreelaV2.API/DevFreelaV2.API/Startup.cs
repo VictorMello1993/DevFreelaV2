@@ -32,14 +32,14 @@ namespace DevFreelaV2.API
         public void ConfigureServices(IServiceCollection services)
         {
             //Configuração da aplicação para definir o horário da requisição
-            services.Configure<OpeningTimeOption>(Configuration.GetSection("OpeningTime"));
+            //services.Configure<OpeningTimeOption>(Configuration.GetSection("OpeningTime"));
 
             //Configuração de banco de dados com SQL Server
             var connectionString = Configuration.GetConnectionString("DevFreelaV2SQLServer");
             services.AddDbContext<DevFreelaDbContext>(options => options.UseSqlServer(connectionString));
 
             //-----------------------------------------------------Configuração de injeção de dependência para acesso a banco de dados em memória-----------------------------------------------------------------------------------------------------------------------
-            services.AddSingleton<DevFreelaDbContext>();            
+            //services.AddSingleton<DevFreelaDbContext>();            
 
             services.AddScoped<IProjectService, ProjectService>();
             services.AddScoped<ISkillService, SkillService>();
