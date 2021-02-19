@@ -6,6 +6,7 @@ using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.HttpsPolicy;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
@@ -32,6 +33,10 @@ namespace DevFreelaV2.API
         {
             //Configuração da aplicação para definir o horário da requisição
             services.Configure<OpeningTimeOption>(Configuration.GetSection("OpeningTime"));
+
+            //Configuração de banco de dados com SQL Server
+            var connectionString = Configuration.GetConnectionString("DevFreelaV2SQLServer");
+            services.AddDbContext<DevFreelaDbContext>(options => options.UseSqlServer(connectionString));
 
             //-----------------------------------------------------Configuração de injeção de dependência para acesso a banco de dados em memória-----------------------------------------------------------------------------------------------------------------------
             services.AddSingleton<DevFreelaDbContext>();            
