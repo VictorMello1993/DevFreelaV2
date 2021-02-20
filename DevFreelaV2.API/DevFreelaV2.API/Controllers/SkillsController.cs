@@ -36,7 +36,7 @@ namespace DevFreelaV2.API.Controllers
                 return NotFound();
             }
 
-            return Ok();
+            return Ok(skill);
         }
 
         [HttpPost]

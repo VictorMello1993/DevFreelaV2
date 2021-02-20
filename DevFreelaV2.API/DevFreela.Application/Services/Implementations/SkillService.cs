@@ -44,6 +44,7 @@ namespace DevFreela.Application.Services.Implementations
             var skill = new Skill(inputModel.Description);
 
             _dbContext.Skills.Add(skill);
+            _dbContext.SaveChanges();
 
             return skill.Id;
         }

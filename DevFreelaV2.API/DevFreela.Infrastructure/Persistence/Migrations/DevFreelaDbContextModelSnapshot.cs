@@ -148,9 +148,14 @@ namespace DevFreela.Infrastructure.Persistence.Migrations
                     b.Property<int>("IdUser")
                         .HasColumnType("int");
 
+                    b.Property<int?>("SkillId")
+                        .HasColumnType("int");
+
                     b.HasKey("Id");
 
                     b.HasIndex("IdSkill");
+
+                    b.HasIndex("SkillId");
 
                     b.ToTable("UserSkills");
                 });
@@ -200,6 +205,12 @@ namespace DevFreela.Infrastructure.Persistence.Migrations
                         .HasForeignKey("IdSkill")
                         .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
+
+                    b.HasOne("DevFreela.Domain.Entities.Skill", "Skill")
+                        .WithMany()
+                        .HasForeignKey("SkillId");
+
+                    b.Navigation("Skill");
                 });
 
             modelBuilder.Entity("DevFreela.Domain.Entities.Project", b =>
