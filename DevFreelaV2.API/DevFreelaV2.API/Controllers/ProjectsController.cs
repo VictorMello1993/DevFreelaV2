@@ -73,7 +73,7 @@ namespace DevFreelaV2.API.Controllers
                 return BadRequest();
             }
 
-            _projectService.Update(inputModel);
+            _projectService.Update(id, inputModel);
 
             return NoContent();
         }

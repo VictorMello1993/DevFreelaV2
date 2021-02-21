@@ -20,6 +20,11 @@ namespace DevFreela.Domain.Entities
             FreelanceProjects = new List<Project>();
         }
 
+        public User()
+        {
+
+        }
+
         public string Name { get; private set; }
         public string Email { get; private set; }
         public DateTime BirthDate { get; private set; }
@@ -36,6 +41,8 @@ namespace DevFreela.Domain.Entities
             {
                 throw new UserIsInactiveException();
             }
+
+            Email = email;
         }
 
         public void Delete()

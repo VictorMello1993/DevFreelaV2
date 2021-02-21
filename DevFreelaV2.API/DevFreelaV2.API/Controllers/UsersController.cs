@@ -58,9 +58,9 @@ namespace DevFreelaV2.API.Controllers
         }
 
         [HttpPut("{id}")]
-        public IActionResult Put([FromBody] UpdateUserInputModel updateUserInputModel)
+        public IActionResult Put([FromBody] UpdateUserInputModel updateUserInputModel, int id)
         {
-            _userService.Update(updateUserInputModel);
+            _userService.Update(id, updateUserInputModel);
             return NoContent();
         }
 

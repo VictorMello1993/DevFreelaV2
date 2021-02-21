@@ -38,7 +38,10 @@ namespace DevFreelaV2.API
             var connectionString = Configuration.GetConnectionString("DevFreelaV2SQLServer");
             services.AddDbContext<DevFreelaDbContext>(options => options.UseSqlServer(connectionString));
 
-            //-----------------------------------------------------Configuração de injeção de dependência para acesso a banco de dados em memória-----------------------------------------------------------------------------------------------------------------------
+            //Configuração de banco de dados em memória
+            //services.AddDbContext<DevFreelaDbContext>(options => options.UseInMemoryDatabase("DevFreela"));
+
+            //-----------------------------------------------------Configuração de injeção de dependência para acesso a banco de dados-----------------------------------------------------------------------------------------------------------------------
             //services.AddSingleton<DevFreelaDbContext>();            
 
             services.AddScoped<IProjectService, ProjectService>();
