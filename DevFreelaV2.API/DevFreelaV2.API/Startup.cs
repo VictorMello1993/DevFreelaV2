@@ -1,21 +1,13 @@
-using DevFreela.Application.Services.Implementations;
-using DevFreela.Application.Services.Interfaces;
+using DevFreela.Application.Commands.CreateProject;
 using DevFreela.Infrastructure.Persistence;
-using DevFreelaV2.API.Models;
+using MediatR;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
-using Microsoft.AspNetCore.HttpsPolicy;
-using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
-using Microsoft.Extensions.Logging;
 using Microsoft.OpenApi.Models;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 
 namespace DevFreelaV2.API
 {
@@ -44,11 +36,12 @@ namespace DevFreelaV2.API
             //-----------------------------------------------------Configuração de injeção de dependência para acesso a banco de dados-----------------------------------------------------------------------------------------------------------------------
             //services.AddSingleton<DevFreelaDbContext>();            
 
-            services.AddScoped<IProjectService, ProjectService>();
-            services.AddScoped<ISkillService, SkillService>();
-            services.AddScoped<IUserService, UserService>();
+            //services.AddScoped<IProjectService, ProjectService>();
+            //services.AddScoped<ISkillService, SkillService>();
+            //services.AddScoped<IUserService, UserService>();
             //----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
+            services.AddMediatR(typeof(CreateProjectCommand));
 
             //Teste do mecanismo de injeção de dependência para verificar se o estado do objeto foi alterado para cada requisição através do padrão Singleton (uma instância por aplicação)
             //services.AddSingleton<ExampleClass>(e => new ExampleClass { Name = "Initial Stage" });

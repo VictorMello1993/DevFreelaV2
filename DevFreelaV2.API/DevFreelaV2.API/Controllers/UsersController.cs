@@ -1,6 +1,12 @@
-﻿using DevFreela.Application.InputModels;
+﻿using DevFreela.Application.Commands.CreateUser;
+using DevFreela.Application.Commands.DeleteUser;
+using DevFreela.Application.Commands.UpdateUser;
+using DevFreela.Application.InputModels;
+using DevFreela.Application.Queries.GetAllUsers;
+using DevFreela.Application.Queries.GetUserById;
 using DevFreela.Application.Services.Interfaces;
 using DevFreelaV2.API.Models;
+using MediatR;
 using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Collections.Generic;
@@ -12,26 +18,32 @@ namespace DevFreelaV2.API.Controllers
     [Route("api/users")]
     public class UsersController : ControllerBase
     {
-        private readonly IUserService _userService;
+        //private readonly IUserService _userService;
+        private readonly IMediator _mediator;
 
-        public UsersController(IUserService userService)
+        public UsersController(IMediator mediator)
         {
-            _userService = userService;
+            //_userService = userService;
+            _mediator = mediator;
         }
 
         [HttpGet]
-        public IActionResult Get()
+        public async Task<IActionResult> Get()
         {
-            var users = _userService.GetAll();
+            //var users = _userService.GetAll();
+            var query = new GetAllUsersQuery();
+            var users = await _mediator.Send(query);
 
             return Ok(users);
         }
 
         //Ex: api/users/1
         [HttpGet("{id}")]
-        public IActionResult GetById(int id)
+        public async Task<IActionResult> GetById(int id)
         {
-            var user = _userService.GetById(id);
+            //var user = _userService.GetById(id);
+            var query = new GetUserByIdQuery(id);
+            var user = await _mediator.Send(query);
 
             if(user == null)
             {
@@ -42,25 +54,31 @@ namespace DevFreelaV2.API.Controllers
         }
 
         [HttpPost]
-        public IActionResult Post([FromBody] NewUserInputModel createUserInputModel)
+        public async Task<IActionResult> Post([FromBody] CreateUserCommand command)
         {
-            var id = _userService.Create(createUserInputModel);
+            //var id = _userService.Create(createUserInputModel);
+            var id = await _mediator.Send(command);
 
-            return CreatedAtAction(nameof(GetById), new { id = id }, createUserInputModel);
+            return CreatedAtAction(nameof(GetById), new { id = id }, command);
         }
 
         [HttpDelete("{id}")]
-        public IActionResult Delete(int id)
+        public async Task<IActionResult> Delete(int id)
         {
-            _userService.Delete(id);
+            //_userService.Delete(id);
+            var command = new DeleteUserCommand(id);
+            await _mediator.Send(command);
 
             return NoContent();
         }
 
         [HttpPut("{id}")]
-        public IActionResult Put([FromBody] UpdateUserInputModel updateUserInputModel, int id)
+        public async Task<IActionResult> Put([FromBody] UpdateUserInputModel inputModel, int id)
         {
-            _userService.Update(id, updateUserInputModel);
+            //_userService.Update(id, inputmodel);      
+            var command = new UpdateUserCommand(id, inputModel.Email);
+            await _mediator.Send(command);
+
             return NoContent();
         }
 

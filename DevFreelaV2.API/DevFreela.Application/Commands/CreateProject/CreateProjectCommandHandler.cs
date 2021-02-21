@@ -1,0 +1,55 @@
+﻿using DevFreela.Domain.Entities;
+using DevFreela.Infrastructure.Persistence;
+using MediatR;
+using System;
+using System.Collections.Generic;
+using System.Text;
+using System.Threading;
+using System.Threading.Tasks;
+
+namespace DevFreela.Application.Commands.CreateProject
+{
+    public class CreateProjectCommandHandler : IRequestHandler<CreateProjectCommand, int>
+    {
+        private readonly DevFreelaDbContext _dbContext;
+        public CreateProjectCommandHandler(DevFreelaDbContext dbContext)
+        {
+            _dbContext = dbContext;
+        }
+
+        public async Task<int> Handle(CreateProjectCommand request, CancellationToken cancellationToken)
+        {
+            var project = new Project(request.Title,
+                                      request.Description,
+                                      request.IdClient,
+                                      request.IdFreelancer,
+                                      request.TotalCost);
+
+            //Entity Framework
+            await _dbContext.Projects.AddAsync(project);
+            await _dbContext.SaveChangesAsync();
+
+            //Dapper
+            //using (var sqlConnection = new SqlConnection(_connectionString))
+            //{
+            //    sqlConnection.Open();
+
+            //    var sql = @"INSERT INTO Projects (Title, Description, IdClient, IdFreelancer, TotalCost, CreatedAt, Status) 
+            //                VALUES (@title, @description, @idclient, @idfreelancer, @totalcost, @createdat, @status)";
+
+            //    sqlConnection.Execute(sql, new
+            //    {
+            //        title = project.Title,
+            //        description = project.Description,
+            //        idclient = project.IdClient,
+            //        idfreelancer = project.IdFreelancer,
+            //        totalcost = project.TotalCost,
+            //        createdat = project.CreatedAt,
+            //        status = project.Status
+            //    });
+            //}
+
+            return project.Id;
+        }
+    }
+}
