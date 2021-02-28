@@ -37,6 +37,25 @@ namespace DevFreela.Infrastructure.Persistence.Repositories
 
             //    return result.ToList();
             //}
-        }        
+        }
+
+        public async Task<Project> GetByIdAsync(int id)
+        {
+            //Entity Framework
+            return await _dbContext.Projects.Include(p => p.Client).Include(p => p.Freelancer).SingleOrDefaultAsync(p => p.Id == id);
+
+            //Dapper
+            //using (var sqlConnection = new SqlConnection(_connectionString))
+            //{
+            //    var sql = @"SELECT P.Id, P.Title, P.Description, U.Name  FROM Projects P, Users U
+            //                WHERE P.IdClient = U.Id
+            //                OR   P.IdFreelancer = U.Id
+            //                AND P.Id = @Id";
+
+            //    var result = await sqlConnection.QueryAsync<Project>(sql, new {Id = id });
+
+            //    return result.SingleOrDefault();
+            //}
+        }
     }
 }

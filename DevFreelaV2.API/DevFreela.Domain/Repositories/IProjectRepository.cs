@@ -8,6 +8,7 @@ namespace DevFreela.Domain.Repositories
 {
     public interface IProjectRepository
     {
-        Task<List<Project>> GetAllAsync();        
+        Task<List<Project>> GetAllAsync();
+        Task<Project> GetByIdAsync(int id);
     }
 }
