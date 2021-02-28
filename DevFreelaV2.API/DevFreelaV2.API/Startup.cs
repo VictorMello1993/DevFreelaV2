@@ -1,5 +1,16 @@
 using DevFreela.Application.Commands.CreateProject;
+using DevFreela.Application.Commands.CreateSkill;
+using DevFreela.Application.Commands.CreateUser;
+using DevFreela.Application.Commands.DeleteProject;
+using DevFreela.Application.Commands.DeleteUser;
+using DevFreela.Application.Commands.FinishProject;
+using DevFreela.Application.Commands.StartProject;
+using DevFreela.Application.Commands.UpdateProject;
+using DevFreela.Application.Commands.UpdateUser;
+using DevFreela.Application.Queries.GetProjectById;
+using DevFreela.Domain.Repositories;
 using DevFreela.Infrastructure.Persistence;
+using DevFreela.Infrastructure.Persistence.Repositories;
 using MediatR;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
@@ -41,13 +52,18 @@ namespace DevFreelaV2.API
             //services.AddScoped<IUserService, UserService>();
             //----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
-            services.AddMediatR(typeof(CreateProjectCommand));
+            services.AddMediatR(typeof(CreateProjectCommand));            
 
             //Teste do mecanismo de injeção de dependência para verificar se o estado do objeto foi alterado para cada requisição através do padrão Singleton (uma instância por aplicação)
             //services.AddSingleton<ExampleClass>(e => new ExampleClass { Name = "Initial Stage" });
 
             //Teste do mecanismo de injeção de dependência para verificar se o estado do objeto foi alterado para cada requisição através do padrão Scoped (uma instância por requisição)
             //services.AddScoped<ExampleClass>(e => new ExampleClass { Name = "Initial Stage" });
+
+            //Adcionando configurações do repository
+            services.AddScoped<IProjectRepository, ProjectRepository>();
+            services.AddScoped<ISkillRepository, SkillRepository>();
+            services.AddScoped<IUserRepository, UserRepository>();
 
             services.AddControllers();
             services.AddSwaggerGen(c =>

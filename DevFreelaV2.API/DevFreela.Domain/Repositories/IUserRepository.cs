@@ -6,8 +6,9 @@ using System.Threading.Tasks;
 
 namespace DevFreela.Domain.Repositories
 {
-    public interface IProjectRepository
+    public interface IUserRepository
     {
-        Task<List<Project>> GetAllAsync();        
+        Task<List<User>> GetAllAsync();
+        Task<User> GetByIdAsync(int id);
     }
 }

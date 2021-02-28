@@ -10,6 +10,11 @@ namespace DevFreela.Domain.Entities
             CreatedAt = DateTime.Now;
         }
 
+        public Skill()
+        {
+
+        }
+
         public string Description { get; private set; }
         public DateTime CreatedAt { get; set; }
     }
