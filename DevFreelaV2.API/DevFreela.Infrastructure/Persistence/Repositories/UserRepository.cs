@@ -27,13 +27,7 @@ namespace DevFreela.Infrastructure.Persistence.Repositories
         {
             await _dbContext.Users.AddAsync(user);
             await _dbContext.SaveChangesAsync();
-        }
-
-        public async Task DeleteAsync(User user)
-        {
-            user.Delete();
-            await _dbContext.SaveChangesAsync();
-        }
+        }        
 
         public async Task<List<User>> GetAllAsync()
         {
