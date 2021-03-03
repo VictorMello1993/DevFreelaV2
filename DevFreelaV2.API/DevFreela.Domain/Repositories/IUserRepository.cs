@@ -10,5 +10,7 @@ namespace DevFreela.Domain.Repositories
     {
         Task<List<User>> GetAllAsync();
         Task<User> GetByIdAsync(int id);
+        Task AddAsync(User user);                
+        Task SaveChangesAsync();
     }
 }

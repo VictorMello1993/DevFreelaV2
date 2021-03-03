@@ -11,5 +11,6 @@ namespace DevFreela.Domain.Repositories
     {
         Task<List<SkillDTO>> GetAllAsync();
         Task<Skill> GetByIdAsync(int id);
+        Task AddAsync(Skill skill);
     }
 }

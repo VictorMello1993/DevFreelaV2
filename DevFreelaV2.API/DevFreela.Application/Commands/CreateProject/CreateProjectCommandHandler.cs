@@ -1,6 +1,8 @@
 ﻿using DevFreela.Domain.Entities;
+using DevFreela.Domain.Repositories;
 using DevFreela.Infrastructure.Persistence;
 using MediatR;
+using Microsoft.Extensions.Configuration;
 using System;
 using System.Collections.Generic;
 using System.Text;
@@ -12,9 +14,14 @@ namespace DevFreela.Application.Commands.CreateProject
     public class CreateProjectCommandHandler : IRequestHandler<CreateProjectCommand, int>
     {
         private readonly DevFreelaDbContext _dbContext;
-        public CreateProjectCommandHandler(DevFreelaDbContext dbContext)
+        private readonly string _connectionString;
+        private readonly IProjectRepository _projectRepository;
+        
+        public CreateProjectCommandHandler(DevFreelaDbContext dbContext, IConfiguration configuration, IProjectRepository projectRepository)
         {
             _dbContext = dbContext;
+            _connectionString = configuration.GetConnectionString("DevFreelaV2SQLServer");
+            _projectRepository = projectRepository;
         }
 
         public async Task<int> Handle(CreateProjectCommand request, CancellationToken cancellationToken)
@@ -25,9 +32,9 @@ namespace DevFreela.Application.Commands.CreateProject
                                       request.IdFreelancer,
                                       request.TotalCost);
 
-            //Entity Framework
-            await _dbContext.Projects.AddAsync(project);
-            await _dbContext.SaveChangesAsync();
+            //Entity Framework - Padrão CQRS
+            //await _dbContext.Projects.AddAsync(project);
+            //await _dbContext.SaveChangesAsync();
 
             //Dapper
             //using (var sqlConnection = new SqlConnection(_connectionString))
@@ -48,6 +55,9 @@ namespace DevFreela.Application.Commands.CreateProject
             //        status = project.Status
             //    });
             //}
+
+            //Padrão repository
+            await _projectRepository.AddAsync(project);
 
             return project.Id;
         }

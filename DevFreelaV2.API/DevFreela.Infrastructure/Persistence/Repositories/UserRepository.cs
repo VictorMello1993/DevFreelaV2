@@ -23,6 +23,18 @@ namespace DevFreela.Infrastructure.Persistence.Repositories
             _connectionString = configuration.GetConnectionString("DevFreelaV2SQLServer");
         }
 
+        public async Task AddAsync(User user)
+        {
+            await _dbContext.Users.AddAsync(user);
+            await _dbContext.SaveChangesAsync();
+        }
+
+        public async Task DeleteAsync(User user)
+        {
+            user.Delete();
+            await _dbContext.SaveChangesAsync();
+        }
+
         public async Task<List<User>> GetAllAsync()
         {
             //Entity Framework
@@ -42,18 +54,23 @@ namespace DevFreela.Infrastructure.Persistence.Repositories
         public async Task<User> GetByIdAsync(int id)
         {
             //Entity Framework
-            //return await _dbContext.Users.SingleOrDefaultAsync(u => u.Id == id);
+            return await _dbContext.Users.SingleOrDefaultAsync(u => u.Id == id);
 
             //Dapper
-            using (var sqlConnection = new SqlConnection(_connectionString))
-            {
-                var sql = @"SELECT Id, Name, Email FROM Users
-                            WHERE Id = @Id";
+            //using (var sqlConnection = new SqlConnection(_connectionString))
+            //{
+            //    var sql = @"SELECT Id, Name, Email FROM Users
+            //                WHERE Id = @Id";
 
-                var result = await sqlConnection.QueryAsync<User>(sql, new {Id = id});
+            //    var result = await sqlConnection.QueryAsync<User>(sql, new {Id = id});
 
-                return result.SingleOrDefault();
-            }
+            //    return result.SingleOrDefault();
+            //}
         }
+
+        public async Task SaveChangesAsync()
+        {
+            await _dbContext.SaveChangesAsync();
+        }        
     }
 }

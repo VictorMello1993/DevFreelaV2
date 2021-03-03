@@ -14,11 +14,18 @@ namespace DevFreela.Infrastructure.Persistence.Repositories
     public class SkillRepository : ISkillRepository
     {
         private readonly DevFreelaDbContext _dbContext;
-        private readonly string _connectionString;
+        private readonly string _connectionString;        
+        
         public SkillRepository(DevFreelaDbContext dbContext, IConfiguration configuration)
         {
             _dbContext = dbContext;
-            _connectionString = configuration.GetConnectionString("DevFreelaV2SQLServer");
+            _connectionString = configuration.GetConnectionString("DevFreelaV2SQLServer");            
+        }
+
+        public async Task AddAsync(Skill skill)
+        {
+            await _dbContext.Skills.AddAsync(skill);
+            await _dbContext.SaveChangesAsync();
         }
 
         public async Task<List<SkillDTO>> GetAllAsync()
@@ -41,18 +48,18 @@ namespace DevFreela.Infrastructure.Persistence.Repositories
         public async Task<Skill> GetByIdAsync(int id)
         {
             //Entity Framework
-            //return await _dbContext.Skills.SingleOrDefaultAsync(s => s.Id == id);
+            return await _dbContext.Skills.SingleOrDefaultAsync(s => s.Id == id);
 
             //Dapper
-            using (var sqlConnection = new SqlConnection(_connectionString))
-            {
-                var sql = @"SELECT Id, Description FROM Skills
-                            WHERE Id = @Id";
+            //using (var sqlConnection = new SqlConnection(_connectionString))
+            //{
+            //    var sql = @"SELECT Id, Description FROM Skills
+            //                WHERE Id = @Id";
 
-                var result = await sqlConnection.QueryAsync<Skill>(sql, new {Id = id });
+            //    var result = await sqlConnection.QueryAsync<Skill>(sql, new {Id = id });
 
-                return result.SingleOrDefault();
-            }
+            //    return result.SingleOrDefault();
+            //}
         }
     }
 }
