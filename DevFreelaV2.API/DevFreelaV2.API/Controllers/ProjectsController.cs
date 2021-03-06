@@ -69,10 +69,12 @@ namespace DevFreelaV2.API.Controllers
         [HttpPost]
         public async Task<IActionResult> Post([FromBody] CreateProjectCommand command)
         {
-            if (command.Title.Length > 50)
-            {
-                return BadRequest();
-            }
+            //Chamando a camada de validação do Fluent Validation - Usando a verificação do ModelState em uma Action (mais tradicional)
+            //if (!ModelState.IsValid)
+            //{
+            //    var messages = ModelState.SelectMany(ms => ms.Value.Errors).Select(e => e.ErrorMessage).ToList();
+            //    return BadRequest(messages);
+            //}            
 
             //var id = _projectService.Create(inputModel);
             var id = await _mediator.Send(command);
@@ -82,14 +84,13 @@ namespace DevFreelaV2.API.Controllers
 
         //EX: api/projects/2
         [HttpPut("{id}")]
-        public async Task<IActionResult> Put(int id, [FromBody] UpdateProjectInputModel inputModel)
-        {
-            var command = new UpdateProjectCommand(id, inputModel.Title, inputModel.Description, inputModel.TotalCost);
-
-            if (command.Description.Length > 200)
-            {
-                return BadRequest();
-            }
+        public async Task<IActionResult> Put(int id, [FromBody] UpdateProjectCommand command)
+        {            
+            //if (!ModelState.IsValid)
+            //{
+            //    var messages = ModelState.SelectMany(ms => ms.Value.Errors).Select(e => e.ErrorMessage).ToList();
+            //    return BadRequest(messages);
+            //}
             
             //_projectService.Update(id, inputModel);
             await _mediator.Send(command);

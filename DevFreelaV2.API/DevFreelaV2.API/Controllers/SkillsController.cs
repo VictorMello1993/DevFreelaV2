@@ -5,6 +5,7 @@ using DevFreela.Application.Queries.GetSkillById;
 using DevFreela.Application.Services.Interfaces;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
+using System.Linq;
 using System.Threading.Tasks;
 
 namespace DevFreelaV2.API.Controllers
@@ -49,6 +50,14 @@ namespace DevFreelaV2.API.Controllers
         [HttpPost]
         public async Task<IActionResult> Post([FromBody] CreateSkillCommand command)
         {
+            //Chamando a camada de validação do Fluent Validation - Usando a verificação do ModelState em uma Action (mais tradicional)
+            //if (!ModelState.IsValid)
+            //{
+            //    var messages = ModelState.SelectMany(ms => ms.Value.Errors).Select(e => e.ErrorMessage).ToList(); 
+
+            //    return BadRequest(messages);
+            //}
+
             //var id = _skillservice.Create(command);
             var id = await _mediator.Send(command);
 

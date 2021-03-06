@@ -56,6 +56,14 @@ namespace DevFreelaV2.API.Controllers
         [HttpPost]
         public async Task<IActionResult> Post([FromBody] CreateUserCommand command)
         {
+            //Chamando a camada de validação do Fluent Validation - Usando a verificação do ModelState em uma Action (mais tradicional)
+            //if (!ModelState.IsValid)
+            //{
+            //    var messages = ModelState.SelectMany(ms => ms.Value.Errors).Select(e => e.ErrorMessage).ToList();
+
+            //    return BadRequest(messages);
+            //}            
+
             //var id = _userService.Create(createUserInputModel);
             var id = await _mediator.Send(command);
 
