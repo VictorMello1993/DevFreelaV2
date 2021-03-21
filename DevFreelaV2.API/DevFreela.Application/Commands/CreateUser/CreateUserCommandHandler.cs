@@ -1,5 +1,6 @@
 ﻿using DevFreela.Domain.Entities;
 using DevFreela.Domain.Repositories;
+using DevFreela.Domain.Services;
 using DevFreela.Infrastructure.Persistence;
 using MediatR;
 using Microsoft.Extensions.Configuration;
@@ -12,18 +13,22 @@ namespace DevFreela.Application.Commands.CreateUser
     {
         private readonly DevFreelaDbContext _dbContext;
         private readonly IUserRepository _userRepository;
-        private string _connectionstring;
+        private readonly string _connectionstring;
+        private readonly IAuthService _authService;
 
-        public CreateUserCommandHandler(DevFreelaDbContext dbContext, IUserRepository userRepository, IConfiguration configuration)
+        public CreateUserCommandHandler(DevFreelaDbContext dbContext, IUserRepository userRepository, IConfiguration configuration, IAuthService authService)
         {
             _dbContext = dbContext;
             _userRepository = userRepository;
             _connectionstring = configuration.GetConnectionString("DevFreelaV2SQLServer");
+            _authService = authService;
         }
 
         public async Task<int> Handle(CreateUserCommand request, CancellationToken cancellationToken)
         {
-            var user = new User(request.Name, request.Email, request.BirthDate);
+            var passwordHash = _authService.ComputeSha256Hash(request.Password);
+
+            var user = new User(request.Name, request.Email, request.BirthDate, passwordHash, request.Role);
 
             //Entity Framework - Padrão CQRS
             //await _dbContext.Users.AddAsync(user);

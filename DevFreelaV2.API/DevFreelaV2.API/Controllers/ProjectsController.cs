@@ -10,6 +10,7 @@ using DevFreela.Application.Queries.GetProjectById;
 using DevFreela.Application.Services.Interfaces;
 using DevFreelaV2.API.Models;
 using MediatR;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Options;
@@ -21,6 +22,7 @@ using System.Threading.Tasks;
 namespace DevFreelaV2.API.Controllers
 {
     [Route("api/projects")]
+    [Authorize]
     public class ProjectsController : ControllerBase
     {
         //private readonly OpeningTimeOption _option;
@@ -41,6 +43,7 @@ namespace DevFreelaV2.API.Controllers
 
         //EX: api/projects?query=net core - Busca pelo query string
         [HttpGet]
+        [Authorize(Roles = "client, freelancer")]
         public async Task<IActionResult> Get()
         {
             //var projects = _projectService.GetAll();
@@ -52,6 +55,7 @@ namespace DevFreelaV2.API.Controllers
 
         //EX: api/projects/2
         [HttpGet("{id}")]
+        [Authorize(Roles = "client, freelancer")]
         public async Task<IActionResult> GetById(int id)
         {
             //var project = _projectService.GetById(id);
@@ -67,6 +71,7 @@ namespace DevFreelaV2.API.Controllers
         }
 
         [HttpPost]
+        [Authorize(Roles = "client")]
         public async Task<IActionResult> Post([FromBody] CreateProjectCommand command)
         {
             //Chamando a camada de validação do Fluent Validation - Usando a verificação do ModelState em uma Action (mais tradicional)
@@ -84,6 +89,7 @@ namespace DevFreelaV2.API.Controllers
 
         //EX: api/projects/2
         [HttpPut("{id}")]
+        [Authorize(Roles = "client")]
         public async Task<IActionResult> Put(int id, [FromBody] UpdateProjectCommand command)
         {            
             //if (!ModelState.IsValid)
@@ -100,6 +106,7 @@ namespace DevFreelaV2.API.Controllers
 
         //EX: api/projects/3/
         [HttpDelete("{id}")]
+        [Authorize(Roles = "client")]
         public async Task<IActionResult> Delete(int id)
         {
             var command = new DeleteProjectCommand(id);
@@ -112,6 +119,7 @@ namespace DevFreelaV2.API.Controllers
 
         //EX: api/projects/1/comments POST
         [HttpPost("{id}/comments")]
+        [Authorize(Roles = "client, freelancer")]
         public async Task<IActionResult> PostComment(int id, [FromBody] CreateCommentCommand command)
         {
             //_projectService.CreateComment(inputModel);
@@ -122,6 +130,7 @@ namespace DevFreelaV2.API.Controllers
 
         //EX: api/projects/1/start
         [HttpPut("{id}/start")]
+        [Authorize(Roles = "client")]
         public async Task<IActionResult> Start(int id)
         {
             //_projectService.Start(id);
@@ -133,6 +142,7 @@ namespace DevFreelaV2.API.Controllers
 
         //EX: api/projects/1/finish
         [HttpPut("{id}/finish")]
+        [Authorize(Roles = "client")]
         public async Task <ActionResult> Finish(int id)
         {
             //_projectService.Finish(id);

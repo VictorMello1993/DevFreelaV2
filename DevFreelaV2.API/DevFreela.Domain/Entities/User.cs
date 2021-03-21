@@ -7,13 +7,16 @@ namespace DevFreela.Domain.Entities
 {
     public class User : BaseEntity
     {
-        public User(string name, string email, DateTime birthDate)
+        public User(string name, string email, DateTime birthDate, string password, string role)
         {
             Name = name;
             Email = email;
             BirthDate = birthDate;
             Active = true;
             CreatedAt = DateTime.Now;
+
+            Password = password;
+            Role = role;
 
             Skills = new List<UserSkill>();
             OwndedProjects = new List<Project>();
@@ -34,6 +37,8 @@ namespace DevFreela.Domain.Entities
         public List<Project> OwndedProjects { get; private set; }
         public List<Project> FreelanceProjects { get; private set; }
         public List<ProjectComment> Comments { get; private set; }
+        public string Password { get; private set; }
+        public string Role { get; private set; }
 
         public void Update(string email)
         {

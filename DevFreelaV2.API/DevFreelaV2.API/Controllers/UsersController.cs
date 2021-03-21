@@ -1,5 +1,6 @@
 ﻿using DevFreela.Application.Commands.CreateUser;
 using DevFreela.Application.Commands.DeleteUser;
+using DevFreela.Application.Commands.LoginUser;
 using DevFreela.Application.Commands.UpdateUser;
 using DevFreela.Application.InputModels;
 using DevFreela.Application.Queries.GetAllUsers;
@@ -7,6 +8,7 @@ using DevFreela.Application.Queries.GetUserById;
 using DevFreela.Application.Services.Interfaces;
 using DevFreelaV2.API.Models;
 using MediatR;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Collections.Generic;
@@ -16,6 +18,7 @@ using System.Threading.Tasks;
 namespace DevFreelaV2.API.Controllers
 {
     [Route("api/users")]
+    [Authorize]
     public class UsersController : ControllerBase
     {
         //private readonly IUserService _userService;
@@ -54,6 +57,7 @@ namespace DevFreelaV2.API.Controllers
         }
 
         [HttpPost]
+        [AllowAnonymous]
         public async Task<IActionResult> Post([FromBody] CreateUserCommand command)
         {
             //Chamando a camada de validação do Fluent Validation - Usando a verificação do ModelState em uma Action (mais tradicional)
@@ -89,14 +93,20 @@ namespace DevFreelaV2.API.Controllers
 
             return NoContent();
         }
-
-        //Ex: api/users/1/login
-        [HttpPut("{id}/login")]
-        public IActionResult Login(int id, [FromBody] LoginModel loginModel)
+        
+        [HttpPut("login")]
+        [AllowAnonymous]
+        public async Task <IActionResult> Login([FromBody] LoginUserCommand command)
         {
-            return NoContent();
+            var loginUserViewModel = await _mediator.Send(command);
 
-            //Será refatorado para implementar a lógica para retornar uma senha encriptada através da chave de autenticação gerada do token JWT
+            if(loginUserViewModel == null)
+            {
+                return BadRequest("Usuário ou senha inválidos.");
+            }
+
+            return Ok(loginUserViewModel);
+
         }
     }
 }
