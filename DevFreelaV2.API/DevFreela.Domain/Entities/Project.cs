@@ -17,7 +17,7 @@ namespace DevFreela.Domain.Entities
 
             CreatedAt = DateTime.Now;
             Status = ProjectStatusEnum.Created;
-            Comments = new List<ProjectComment>();
+            Comments = new List<ProjectComment>();            
         }
 
         public Project()
@@ -72,6 +72,16 @@ namespace DevFreela.Domain.Entities
             Title = title;
             Description = description;
             TotalCost = totalcost;
+        }
+
+        public void SetUserClient(User user)
+        {
+            Client = user;
+        }
+
+        public void SetUserFreelancer(User user)
+        {
+            Freelancer = user;
         }
     }
 }

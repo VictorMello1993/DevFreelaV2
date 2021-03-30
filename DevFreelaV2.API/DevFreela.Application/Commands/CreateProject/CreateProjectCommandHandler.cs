@@ -24,6 +24,11 @@ namespace DevFreela.Application.Commands.CreateProject
             _projectRepository = projectRepository;
         }
 
+        public CreateProjectCommandHandler(IProjectRepository projectRepository)
+        {
+            _projectRepository = projectRepository;
+        }
+
         public async Task<int> Handle(CreateProjectCommand request, CancellationToken cancellationToken)
         {
             var project = new Project(request.Title,

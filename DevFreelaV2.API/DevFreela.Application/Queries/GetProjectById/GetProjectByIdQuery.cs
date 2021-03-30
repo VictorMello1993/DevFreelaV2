@@ -13,6 +13,12 @@ namespace DevFreela.Application.Queries.GetProjectById
             Id = id;
         }
 
+        public GetProjectByIdQuery(string query)
+        {
+            Query = query;
+        }
+
         public int Id { get; private set; }
+        public string Query { get; private set; }
     }
 }

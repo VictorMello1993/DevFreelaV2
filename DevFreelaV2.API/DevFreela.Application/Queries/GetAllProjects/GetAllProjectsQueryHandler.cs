@@ -28,6 +28,11 @@ namespace DevFreela.Application.Queries.GetAllProjects
             _projectRepository = projectRepository;
         }
 
+        public GetAllProjectsQueryHandler(IProjectRepository projectRepository)
+        {
+            _projectRepository = projectRepository;
+        }
+
         public async Task<List<ProjectViewModel>> Handle(GetAllProjectsQuery request, CancellationToken cancellationToken)
         {
             //Entity Framework com padrão CQRS

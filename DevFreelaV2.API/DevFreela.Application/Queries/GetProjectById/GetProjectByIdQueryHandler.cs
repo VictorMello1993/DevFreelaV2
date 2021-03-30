@@ -17,6 +17,11 @@ namespace DevFreela.Application.Queries.GetProjectById
         private readonly DevFreelaDbContext _dbContext;
         private IProjectRepository _projectRepository;
 
+        public GetProjectByIdQueryHandler(IProjectRepository projectRepository)
+        {
+            _projectRepository = projectRepository;
+        }
+
         public GetProjectByIdQueryHandler(DevFreelaDbContext dbContext, IProjectRepository projectRepository)
         {
             _dbContext = dbContext;

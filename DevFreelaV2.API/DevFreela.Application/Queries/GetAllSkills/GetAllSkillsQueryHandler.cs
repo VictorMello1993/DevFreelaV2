@@ -19,6 +19,11 @@ namespace DevFreela.Application.Queries.GetAllSkills
         private readonly string _connectionString;
         private ISkillRepository _skillRepository;
 
+        public GetAllSkillsQueryHandler(ISkillRepository skillRepository)
+        {
+            _skillRepository = skillRepository;
+        }
+
         public GetAllSkillsQueryHandler(DevFreelaDbContext dbContext, IConfiguration configuration, ISkillRepository skillRepository)
         {
             _dbContext = dbContext;

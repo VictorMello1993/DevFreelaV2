@@ -18,7 +18,12 @@ namespace DevFreela.Application.Queries.GetAllUsers
         private readonly DevFreelaDbContext _dbContext;
         private readonly IUserRepository _userRepository;
         private readonly string _connectionString;
-            
+
+        public GetAllUsersQueryHandler(IUserRepository userRepository)
+        {
+            _userRepository = userRepository;
+        }
+
         public GetAllUsersQueryHandler(DevFreelaDbContext dbContext, IConfiguration configuration, IUserRepository userRepository)
         {
             _dbContext = dbContext;
