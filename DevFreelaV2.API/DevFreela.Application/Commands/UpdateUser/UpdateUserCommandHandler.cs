@@ -14,6 +14,11 @@ namespace DevFreela.Application.Commands.UpdateUser
         private readonly IUserRepository _userRepository;
         private readonly string _connectionString;
 
+        public UpdateUserCommandHandler(IUserRepository userRepository)
+        {
+            _userRepository = userRepository;
+        }
+
         public UpdateUserCommandHandler(DevFreelaDbContext dbContext, IUserRepository userRepository, IConfiguration configuration)
         {
             _dbContext = dbContext;

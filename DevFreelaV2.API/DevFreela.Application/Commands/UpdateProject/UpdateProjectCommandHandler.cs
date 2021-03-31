@@ -18,6 +18,11 @@ namespace DevFreela.Application.Commands.UpdateProject
         private readonly IProjectRepository _projectRepository;
         private readonly string _connectionString;
 
+        public UpdateProjectCommandHandler(IProjectRepository projectRepository)
+        {
+            _projectRepository = projectRepository;
+        }
+
         public UpdateProjectCommandHandler(DevFreelaDbContext dbContext, IProjectRepository projectRepository, IConfiguration configuration)
         {
             _dbContext = dbContext;

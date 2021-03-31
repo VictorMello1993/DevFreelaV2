@@ -18,6 +18,11 @@ namespace DevFreela.Application.Commands.StartProject
         private readonly IProjectRepository _projectRepository;
         private readonly string _connectionString;
 
+        public StartProjectCommandHandler(IProjectRepository projectRepository)
+        {
+            _projectRepository = projectRepository;
+        }
+
         public StartProjectCommandHandler(DevFreelaDbContext dbContext, IProjectRepository projectRepository, IConfiguration configuration)
         {
             _dbContext = dbContext;
