@@ -14,6 +14,11 @@ namespace DevFreela.Application.Commands.DeleteUser
         private readonly IUserRepository _userRepository;
         private readonly string _connectionString;
 
+        public DeleteUserCommandHandler(IUserRepository userRepository)
+        {
+            _userRepository = userRepository;
+        }
+
         public DeleteUserCommandHandler(DevFreelaDbContext dbContext, IUserRepository userRepository, IConfiguration configuration)
         {
             _dbContext = dbContext;

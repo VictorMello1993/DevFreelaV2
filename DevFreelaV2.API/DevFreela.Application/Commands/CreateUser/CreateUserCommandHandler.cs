@@ -16,6 +16,12 @@ namespace DevFreela.Application.Commands.CreateUser
         private readonly string _connectionstring;
         private readonly IAuthService _authService;
 
+        public CreateUserCommandHandler(IUserRepository userRepository, IAuthService authService)
+        {
+            _userRepository = userRepository;
+            _authService = authService;
+        }
+
         public CreateUserCommandHandler(DevFreelaDbContext dbContext, IUserRepository userRepository, IConfiguration configuration, IAuthService authService)
         {
             _dbContext = dbContext;

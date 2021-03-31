@@ -18,6 +18,11 @@ namespace DevFreela.Application.Commands.FinishProject
         private readonly IProjectRepository _projectRepository;
         private readonly string _connectionString;
 
+        public FinishProjectCommandHandler(IProjectRepository projectRepository)
+        {
+            _projectRepository = projectRepository;
+        }
+
         public FinishProjectCommandHandler(DevFreelaDbContext dbContext, IProjectRepository projectRepository, IConfiguration configuration)
         {
             _dbContext = dbContext;

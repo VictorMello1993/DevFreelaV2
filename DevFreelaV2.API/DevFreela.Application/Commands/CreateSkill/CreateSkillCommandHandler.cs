@@ -16,7 +16,12 @@ namespace DevFreela.Application.Commands.CreateProject
     {
         private readonly DevFreelaDbContext _dbContext;
         private readonly ISkillRepository _skillRepository;
-        private readonly string _connectionString;        
+        private readonly string _connectionString;
+
+        public CreateSkillCommandHandler(ISkillRepository skillRepository)
+        {
+            _skillRepository = skillRepository;
+        }
 
         public CreateSkillCommandHandler(DevFreelaDbContext dbContext, ISkillRepository skillRepository, IConfiguration configuration)
         {

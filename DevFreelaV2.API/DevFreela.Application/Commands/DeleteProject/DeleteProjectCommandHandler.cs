@@ -15,7 +15,12 @@ namespace DevFreela.Application.Commands.DeleteProject
     {
         private readonly DevFreelaDbContext _dbContext;
         private readonly IProjectRepository _projectRepository;
-        private string _connectionString;        
+        private string _connectionString;
+
+        public DeleteProjectCommandHandler(IProjectRepository projectRepository)
+        {
+            _projectRepository = projectRepository;
+        }
 
         public DeleteProjectCommandHandler(DevFreelaDbContext dbContext, IProjectRepository projectRepository, IConfiguration configuration)
         {
