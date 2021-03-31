@@ -11,7 +11,7 @@ using Xunit;
 
 namespace DevFreela.UnitTests.Application.Queries
 {
-    public class GetAllUsersCommandHandlerTests
+    public class GetAllUsersQueryHandlerTests
     {
         [Fact]
         public async Task FourUsersExist_Executed_ReturnUserViewModels()

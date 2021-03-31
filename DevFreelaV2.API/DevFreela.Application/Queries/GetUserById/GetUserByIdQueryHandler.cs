@@ -20,6 +20,11 @@ namespace DevFreela.Application.Queries.GetUserById
         private readonly IUserRepository _userRepository;
         private readonly string _connectionString;
 
+        public GetUserByIdQueryHandler(IUserRepository userRepository)
+        {
+            _userRepository = userRepository;
+        }
+
         public GetUserByIdQueryHandler(DevFreelaDbContext dbContext, IConfiguration configuration, IUserRepository userRepository)
         {
             _dbContext = dbContext;

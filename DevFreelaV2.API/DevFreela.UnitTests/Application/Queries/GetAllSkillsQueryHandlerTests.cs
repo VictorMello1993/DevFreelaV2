@@ -12,7 +12,7 @@ using System.Threading;
 
 namespace DevFreela.UnitTests.Application.Queries
 {
-    public class GetAllSkillsCommandHandlerTests
+    public class GetAllSkillsQueryHandlerTests
     {
         [Fact]
         public async Task TwoSkillsExist_Executed_ReturnTwoSkillsDTO()

@@ -19,6 +19,11 @@ namespace DevFreela.Application.Queries.GetSkillById
         private readonly string _connectionString;
         private readonly ISkillRepository _skillRepository;
 
+        public GetSkillByIdQueryHandler(ISkillRepository skillRepository)
+        {
+            _skillRepository = skillRepository;
+        }
+
         public GetSkillByIdQueryHandler(DevFreelaDbContext dbContext, IConfiguration configuration, ISkillRepository skillRepository)
         {
             _dbContext = dbContext;

@@ -12,7 +12,7 @@ using Xunit;
 
 namespace DevFreela.UnitTests.Application.Queries
 {
-    public class GetProjectByIdCommandHandlerTests
+    public class GetProjectByIdQueryHandlerTests
     {
         [Fact]
         public async Task ProjectWithIdExists_Executed_ReturnProjecViewModel()
@@ -26,11 +26,11 @@ namespace DevFreela.UnitTests.Application.Queries
             project.SetUserFreelancer(freelancer);
 
             var projectRepositoryMock = new Mock<IProjectRepository>();
-               
-            projectRepositoryMock.Setup(p => p.GetByIdAsync(2).Result).Returns(project);
 
             var getProjectByIdQuery = new GetProjectByIdQuery(2); //Passando o id 2 para obter um objeto específico
             var getProjectByIdQueryHandler = new GetProjectByIdQueryHandler(projectRepositoryMock.Object);
+               
+            projectRepositoryMock.Setup(p => p.GetByIdAsync(getProjectByIdQuery.Id).Result).Returns(project);
 
             //Act            
             var projectDetailsViewModel = await getProjectByIdQueryHandler.Handle(getProjectByIdQuery, new CancellationToken());
