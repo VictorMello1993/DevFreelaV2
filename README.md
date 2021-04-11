@@ -15,7 +15,5 @@
   <li> Publicação da aplicação no Azure DevOps</li>
 <ul>
   
- ## Melhorias
+## Melhorias
 - [ ] Na parte de autenticação e autorização, implementar um serviço de confirmação e recuperação de senha
-  
-
