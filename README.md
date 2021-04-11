@@ -13,7 +13,7 @@
   <li> Autenticação e autorização do usuário para diferentes perfis</li>
   <li> Testes unitários com xUnit - Padrão AAA (Arrange Act Assert) para estruturação de testes e padrão Given When Then para nomenclatura dos testes</li>
   <li> Publicação da aplicação no Azure DevOps</li>
-<ul>
+</ul>
   
 ## Melhorias
 - [ ] Na parte de autenticação e autorização, implementar um serviço de confirmação e recuperação de senha
