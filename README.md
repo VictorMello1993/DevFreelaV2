@@ -17,3 +17,6 @@
   
 ## Melhorias
 - [ ] Na parte de autenticação e autorização, implementar um serviço de confirmação e recuperação de senha
+- [ ] Implementar uma API de pagamentos
+- [ ] Extrair a API de pagamentos para um microsserviço
+- [ ] Verificar a possibilidade de melhorar a performance da API com cache.
