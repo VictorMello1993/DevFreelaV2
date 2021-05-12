@@ -1,26 +1,31 @@
-﻿using DevFreela.Domain.Repositories;
+﻿using DevFreela.Domain.DTOs;
+using DevFreela.Domain.Repositories;
+using DevFreela.Domain.Services;
 using DevFreela.Infrastructure.Persistence;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 
 namespace DevFreela.Application.Commands.FinishProject
 {
-    public class FinishProjectCommandHandler : IRequestHandler<FinishProjectCommand, Unit>
+    public class FinishProjectCommandHandler : IRequestHandler<FinishProjectCommand, bool>
     {
         private readonly DevFreelaDbContext _dbContext;
         private readonly IProjectRepository _projectRepository;
+        private readonly IPaymentService _paymentService;
         private readonly string _connectionString;
 
         public FinishProjectCommandHandler(IProjectRepository projectRepository)
         {
             _projectRepository = projectRepository;
+        }
+
+        public FinishProjectCommandHandler(IProjectRepository projectRepository, IPaymentService paymentService)
+        {
+            _projectRepository = projectRepository;
+            _paymentService = paymentService;
         }
 
         public FinishProjectCommandHandler(DevFreelaDbContext dbContext, IProjectRepository projectRepository, IConfiguration configuration)
@@ -30,7 +35,7 @@ namespace DevFreela.Application.Commands.FinishProject
             _connectionString = configuration.GetConnectionString("DevFreelaV2SQLServer");
         }
 
-        public async Task<Unit> Handle(FinishProjectCommand request, CancellationToken cancellationToken)
+        public async Task<bool> Handle(FinishProjectCommand request, CancellationToken cancellationToken)
         {
             //Padrão CQRS
             //var project = await _dbContext.Projects.SingleOrDefaultAsync(p => p.Id == request.Id);
@@ -53,11 +58,19 @@ namespace DevFreela.Application.Commands.FinishProject
             //Padrão Repository
             var project = await _projectRepository.GetByIdAsync(request.Id);
 
-            project.Finish();
+            //Sem mensageria - Forma tradicional
+            //project.Finish();
+            
+            //Com mensageria (RabbitMQ)
+            var paymentInfoDto = new PaymentInfoDTO(request.Id, request.CreditCardNumber, request.Cvv, request.ExpiresAt, request.FullName, project.TotalCost);
+
+            _paymentService.ProcessPayment(paymentInfoDto);
+
+            project.SetPaymentPending();
 
             await _projectRepository.SaveChangesAsync();
-            
-            return Unit.Value;
+
+            return true;
         }
     }
 }

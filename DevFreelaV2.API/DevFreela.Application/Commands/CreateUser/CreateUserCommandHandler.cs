@@ -1,6 +1,7 @@
 ﻿using DevFreela.Domain.Entities;
 using DevFreela.Domain.Repositories;
 using DevFreela.Domain.Services;
+using DevFreela.Domain.Services.Auth;
 using DevFreela.Infrastructure.Persistence;
 using MediatR;
 using Microsoft.Extensions.Configuration;

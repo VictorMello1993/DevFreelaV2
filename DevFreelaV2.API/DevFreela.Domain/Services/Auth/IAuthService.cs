@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-
-namespace DevFreela.Domain.Services
+﻿namespace DevFreela.Domain.Services.Auth
 {
     public interface IAuthService
     {

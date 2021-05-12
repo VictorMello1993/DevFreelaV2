@@ -143,10 +143,20 @@ namespace DevFreelaV2.API.Controllers
         //EX: api/projects/1/finish
         [HttpPut("{id}/finish")]
         [Authorize(Roles = "client")]
-        public async Task <ActionResult> Finish(int id)
+        public async Task <ActionResult> Finish(int id, [FromBody] FinishProjectCommand command)
         {
             //_projectService.Finish(id);
-            var command = new FinishProjectCommand(id);
+            //var command = new FinishProjectCommand(id);
+
+            command.Id = id;
+
+            var result = await _mediator.Send(command);
+
+            if (!result)
+            {
+                return BadRequest("O pagamento não pôde ser processado.");
+            }
+
             await _mediator.Send(command);
 
             return NoContent();
