@@ -1,10 +1,7 @@
 using DevFreela.Application.Commands.CreateProject;
 using DevFreela.Application.Validators;
-using DevFreela.Domain.Repositories;
-using DevFreela.Domain.Services.Auth;
 using DevFreela.Infrastructure.Persistence;
-using DevFreela.Infrastructure.Persistence.Repositories;
-using DevFreela.Infrastructure.Services.Auth;
+using DevFreelaV2.API.Extensions;
 using DevFreelaV2.API.Filters;
 using FluentValidation.AspNetCore;
 using MediatR;
@@ -40,6 +37,8 @@ namespace DevFreelaV2.API
             var connectionString = Configuration.GetConnectionString("DevFreelaV2SQLServer");
             services.AddDbContext<DevFreelaDbContext>(options => options.UseSqlServer(connectionString));
 
+            //services.AddHostedService<PaymentApprovedConsumer>();
+
             //Configuração de banco de dados em memória
             //services.AddDbContext<DevFreelaDbContext>(options => options.UseInMemoryDatabase("DevFreela"));
 
@@ -51,24 +50,21 @@ namespace DevFreelaV2.API
             //services.AddScoped<IUserService, UserService>();
             //----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
+            services.AddHttpClient();
+
+            services.AddInfrastructure();
+
+            //Configuração da biblioteca MediatR (padrão CQRS)
             services.AddMediatR(typeof(CreateProjectCommand));            
 
             //Teste do mecanismo de injeção de dependência para verificar se o estado do objeto foi alterado para cada requisição através do padrão Singleton (uma instância por aplicação)
             //services.AddSingleton<ExampleClass>(e => new ExampleClass { Name = "Initial Stage" });
 
             //Teste do mecanismo de injeção de dependência para verificar se o estado do objeto foi alterado para cada requisição através do padrão Scoped (uma instância por requisição)
-            //services.AddScoped<ExampleClass>(e => new ExampleClass { Name = "Initial Stage" });
-
-            //Adcionando configurações do repository
-            services.AddScoped<IProjectRepository, ProjectRepository>();
-            services.AddScoped<ISkillRepository, SkillRepository>();
-            services.AddScoped<IUserRepository, UserRepository>();
-
-            //Configurações de autenticação e autorização do usuário
-            services.AddScoped<IAuthService, AuthService>();
+            //services.AddScoped<ExampleClass>(e => new ExampleClass { Name = "Initial Stage" });                        
 
             services.AddControllers(options => options.Filters.Add(typeof(ValidationFilter))) //Configurando filtros de validação
-                    .AddFluentValidation(fv => fv.RegisterValidatorsFromAssemblyContaining<CreateSkillCommandValidator>());
+                    .AddFluentValidation(fv => fv.RegisterValidatorsFromAssemblyContaining<CreateSkillCommandValidator>()); //Configuração do Fluent Validation
 
             services.AddSwaggerGen(c =>
             {

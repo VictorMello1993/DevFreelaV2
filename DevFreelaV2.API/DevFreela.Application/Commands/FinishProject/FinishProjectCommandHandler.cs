@@ -1,6 +1,7 @@
 ﻿using DevFreela.Domain.DTOs;
 using DevFreela.Domain.Repositories;
 using DevFreela.Domain.Services;
+using DevFreela.Domain.Services.Payments;
 using DevFreela.Infrastructure.Persistence;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
@@ -22,17 +23,12 @@ namespace DevFreela.Application.Commands.FinishProject
             _projectRepository = projectRepository;
         }
 
-        public FinishProjectCommandHandler(IProjectRepository projectRepository, IPaymentService paymentService)
-        {
-            _projectRepository = projectRepository;
-            _paymentService = paymentService;
-        }
-
-        public FinishProjectCommandHandler(DevFreelaDbContext dbContext, IProjectRepository projectRepository, IConfiguration configuration)
+        public FinishProjectCommandHandler(DevFreelaDbContext dbContext, IProjectRepository projectRepository, IConfiguration configuration, IPaymentService paymentService)
         {
             _dbContext = dbContext;
             _projectRepository = projectRepository;
             _connectionString = configuration.GetConnectionString("DevFreelaV2SQLServer");
+            _paymentService = paymentService;
         }
 
         public async Task<bool> Handle(FinishProjectCommand request, CancellationToken cancellationToken)
@@ -57,16 +53,18 @@ namespace DevFreela.Application.Commands.FinishProject
 
             //Padrão Repository
             var project = await _projectRepository.GetByIdAsync(request.Id);
-
-            //Sem mensageria - Forma tradicional
-            //project.Finish();
             
-            //Com mensageria (RabbitMQ)
+            project.Finish();
+
+            //Processando o pagamento no microsserviço
             var paymentInfoDto = new PaymentInfoDTO(request.Id, request.CreditCardNumber, request.Cvv, request.ExpiresAt, request.FullName, project.TotalCost);
 
-            _paymentService.ProcessPayment(paymentInfoDto);
+            var result = await _paymentService.ProcessPayment(paymentInfoDto);
 
-            project.SetPaymentPending();
+            if (!result)
+            {
+                project.SetPaymentPending();
+            }
 
             await _projectRepository.SaveChangesAsync();
 

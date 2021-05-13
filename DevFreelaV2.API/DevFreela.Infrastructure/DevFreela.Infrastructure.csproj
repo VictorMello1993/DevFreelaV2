@@ -5,7 +5,12 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Compile Remove="Services\MessageBus\MessageBusService.cs" />
+  </ItemGroup>
+
+  <ItemGroup>
     <Folder Include="Persistence\Migrations\" />
+    <Folder Include="Services\MessageBus\" />
   </ItemGroup>
 
   <ItemGroup>
@@ -16,6 +21,7 @@
       <PrivateAssets>all</PrivateAssets>
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
     </PackageReference>
+    <PackageReference Include="Microsoft.Extensions.Http" Version="5.0.0" />
     <PackageReference Include="RabbitMQ.Client" Version="6.2.1" />
   </ItemGroup>
 

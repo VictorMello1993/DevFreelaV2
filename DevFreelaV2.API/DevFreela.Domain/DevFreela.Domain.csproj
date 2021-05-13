@@ -4,4 +4,14 @@
     <TargetFramework>netcoreapp3.1</TargetFramework>
   </PropertyGroup>
 
+  <ItemGroup>
+    <Compile Remove="IntegrationEvents\PaymentApprovedIntegrationEvent.cs" />
+    <Compile Remove="Services\MessageBus\IMessageBusService.cs" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Folder Include="IntegrationEvents\" />
+    <Folder Include="Services\MessageBus\" />
+  </ItemGroup>
+
 </Project>

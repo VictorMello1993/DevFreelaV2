@@ -4,19 +4,11 @@ using DevFreela.Application.Commands.DeleteProject;
 using DevFreela.Application.Commands.FinishProject;
 using DevFreela.Application.Commands.StartProject;
 using DevFreela.Application.Commands.UpdateProject;
-using DevFreela.Application.InputModels;
 using DevFreela.Application.Queries.GetAllProjects;
 using DevFreela.Application.Queries.GetProjectById;
-using DevFreela.Application.Services.Interfaces;
-using DevFreelaV2.API.Models;
 using MediatR;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.Extensions.DependencyInjection;
-using Microsoft.Extensions.Options;
-using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Threading.Tasks;
 
 namespace DevFreelaV2.API.Controllers
@@ -155,9 +147,7 @@ namespace DevFreelaV2.API.Controllers
             if (!result)
             {
                 return BadRequest("O pagamento não pôde ser processado.");
-            }
-
-            await _mediator.Send(command);
+            }            
 
             return NoContent();
         }
