@@ -13,10 +13,12 @@
   <li> Autenticação e autorização do usuário para diferentes perfis</li>
   <li> Testes unitários com xUnit - Padrão AAA (Arrange Act Assert) para estruturação de testes e padrão Given When Then para nomenclatura dos testes</li>
   <li> Publicação da aplicação no Azure DevOps</li>
+  <li> Microsserviços (Conteúdo extra)</li>
 </ul>
   
 ## Melhorias
 - [ ] Na parte de autenticação e autorização, implementar um serviço de confirmação e recuperação de senha
-- [ ] Implementar uma API de pagamentos
-- [ ] Extrair a API de pagamentos para um microsserviço
+- [x] Implementar a API de pagamentos
+- [x] Extrair a API de pagamentos do monolito para um microsserviço e testar usando HTTP (comunicação síncrona)
+- [ ] Implementar a comunicação assíncrona do monolito para um microsserviço usando mensageria RabitMQ
 - [ ] Verificar a possibilidade de melhorar a performance da API com cache.
