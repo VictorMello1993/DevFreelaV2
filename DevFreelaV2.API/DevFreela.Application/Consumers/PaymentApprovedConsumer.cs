@@ -28,6 +28,7 @@ namespace DevFreela.Application.Consumers
             _connection = factory.CreateConnection();
             _channel = _connection.CreateModel();
 
+            //Cria a fila
             _channel.QueueDeclare(
                 queue: PAYMENT_APPROVED_QUEUE,
                 durable: false,
@@ -40,7 +41,7 @@ namespace DevFreela.Application.Consumers
         {
             var consumer = new EventingBasicConsumer(_channel);
 
-            consumer.Received += async (sender, eventArgs) =>
+            consumer.Received += async (sender, eventArgs) => //O consumidor recebe a mensagem despachada pelo MessageBroker
             {
                 var paymentApprovedBytes = eventArgs.Body.ToArray();
                 var paymentApprovedJson = Encoding.UTF8.GetString(paymentApprovedBytes);
@@ -52,7 +53,7 @@ namespace DevFreela.Application.Consumers
                 _channel.BasicAck(eventArgs.DeliveryTag, false);
             };
 
-            _channel.BasicConsume(PAYMENT_APPROVED_QUEUE, false, consumer);
+            _channel.BasicConsume(PAYMENT_APPROVED_QUEUE, false, consumer); //Inicializando o consumer depois de finalizar o evento de recebimento da mensagem
 
             return Task.CompletedTask;
         }

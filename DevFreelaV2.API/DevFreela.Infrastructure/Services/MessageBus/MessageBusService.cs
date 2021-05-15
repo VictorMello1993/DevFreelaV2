@@ -5,13 +5,13 @@ namespace DevFreela.Infrastructure.Services.MessageBus
 {
     public class MessageBusService : IMessageBusService
     {
-        private readonly ConnectionFactory _factory;
+        private readonly ConnectionFactory _factory;        
 
         public MessageBusService()
         {
             _factory = new ConnectionFactory
             {
-                HostName = "localhost"
+                HostName = "localhost",                
             };
         }
 
@@ -21,6 +21,7 @@ namespace DevFreela.Infrastructure.Services.MessageBus
             {
                 using(var channel = connection.CreateModel())
                 {
+                    //Criando a fila
                     channel.QueueDeclare(
                         queue: queue,
                         durable: false,
@@ -28,11 +29,12 @@ namespace DevFreela.Infrastructure.Services.MessageBus
                         autoDelete: false,
                         arguments: null);
 
+                    //Publicando a mensagem
                     channel.BasicPublish(
-                        exchange: "",
+                        exchange: "", //Exchange padrão
                         routingKey: queue,
                         basicProperties: null,
-                        body: message);
+                        body: message); 
                 }
             }
         }

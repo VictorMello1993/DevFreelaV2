@@ -5,12 +5,7 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <Compile Remove="Services\MessageBus\MessageBusService.cs" />
-  </ItemGroup>
-
-  <ItemGroup>
     <Folder Include="Persistence\Migrations\" />
-    <Folder Include="Services\MessageBus\" />
   </ItemGroup>
 
   <ItemGroup>

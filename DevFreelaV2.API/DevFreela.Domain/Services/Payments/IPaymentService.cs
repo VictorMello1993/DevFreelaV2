@@ -5,7 +5,10 @@ namespace DevFreela.Domain.Services.Payments
 {
     public interface IPaymentService
     {
-        //void ProcessPayment(PaymentInfoDTO paymentInfoDTO);
-        Task<bool> ProcessPayment(PaymentInfoDTO paymentInfoDTO);
+        //Comunicação assíncrona, via mensageria
+        void ProcessPayment(PaymentInfoDTO paymentInfoDTO);
+        
+        //Comunicação via HTTP - Forma síncrona        
+        //Task<bool> ProcessPayment(PaymentInfoDTO paymentInfoDTO);
     }
 }

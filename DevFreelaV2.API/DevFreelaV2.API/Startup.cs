@@ -1,4 +1,5 @@
 using DevFreela.Application.Commands.CreateProject;
+using DevFreela.Application.Consumers;
 using DevFreela.Application.Validators;
 using DevFreela.Infrastructure.Persistence;
 using DevFreelaV2.API.Extensions;
@@ -37,7 +38,7 @@ namespace DevFreelaV2.API
             var connectionString = Configuration.GetConnectionString("DevFreelaV2SQLServer");
             services.AddDbContext<DevFreelaDbContext>(options => options.UseSqlServer(connectionString));
 
-            //services.AddHostedService<PaymentApprovedConsumer>();
+            services.AddHostedService<PaymentApprovedConsumer>();
 
             //Configuração de banco de dados em memória
             //services.AddDbContext<DevFreelaDbContext>(options => options.UseInMemoryDatabase("DevFreela"));
