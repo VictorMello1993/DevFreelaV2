@@ -1,11 +1,9 @@
 ﻿using DevFreela.Application.Commands.LoginUser;
 using DevFreela.Domain.Entities;
 using DevFreela.Domain.Repositories;
-using DevFreela.Domain.Services;
+using DevFreela.Domain.Services.Auth;
 using Moq;
 using System;
-using System.Collections.Generic;
-using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 using Xunit;

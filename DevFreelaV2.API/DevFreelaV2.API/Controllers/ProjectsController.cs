@@ -4,19 +4,11 @@ using DevFreela.Application.Commands.DeleteProject;
 using DevFreela.Application.Commands.FinishProject;
 using DevFreela.Application.Commands.StartProject;
 using DevFreela.Application.Commands.UpdateProject;
-using DevFreela.Application.InputModels;
 using DevFreela.Application.Queries.GetAllProjects;
 using DevFreela.Application.Queries.GetProjectById;
-using DevFreela.Application.Services.Interfaces;
-using DevFreelaV2.API.Models;
 using MediatR;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.Extensions.DependencyInjection;
-using Microsoft.Extensions.Options;
-using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Threading.Tasks;
 
 namespace DevFreelaV2.API.Controllers
@@ -143,13 +135,21 @@ namespace DevFreelaV2.API.Controllers
         //EX: api/projects/1/finish
         [HttpPut("{id}/finish")]
         [Authorize(Roles = "client")]
-        public async Task <ActionResult> Finish(int id)
+        public async Task <ActionResult> Finish(int id, [FromBody] FinishProjectCommand command)
         {
             //_projectService.Finish(id);
-            var command = new FinishProjectCommand(id);
-            await _mediator.Send(command);
+            //var command = new FinishProjectCommand(id);
 
-            return NoContent();
+            command.Id = id;
+
+            var result = await _mediator.Send(command);
+
+            if (!result)
+            {
+                return BadRequest("O pagamento não pôde ser processado.");
+            }
+
+            return Accepted();
         }
     }
 }

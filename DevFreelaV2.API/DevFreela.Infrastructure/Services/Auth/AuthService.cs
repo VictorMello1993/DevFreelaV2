@@ -1,4 +1,4 @@
-﻿using DevFreela.Domain.Services;
+﻿using DevFreela.Domain.Services.Auth;
 using Microsoft.Extensions.Configuration;
 using Microsoft.IdentityModel.Tokens;
 using System;
@@ -8,7 +8,7 @@ using System.Security.Claims;
 using System.Security.Cryptography;
 using System.Text;
 
-namespace DevFreela.Infrastructure.Auth
+namespace DevFreela.Infrastructure.Services.Auth
 {
     public class AuthService : IAuthService
     {

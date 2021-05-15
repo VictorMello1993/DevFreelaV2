@@ -22,7 +22,7 @@ namespace DevFreela.UnitTests.Application.Commands
             var projectRepositoryMock = new Mock<IProjectRepository>();
             var id = 9999;
 
-            var finishProjectCommand = new FinishProjectCommand(id);
+            var finishProjectCommand = new FinishProjectCommand { Id = id };
             var finishProjectCommandHandler = new FinishProjectCommandHandler(projectRepositoryMock.Object);
 
             projectRepositoryMock.Setup(p => p.GetByIdAsync(id).Result).Returns(project);

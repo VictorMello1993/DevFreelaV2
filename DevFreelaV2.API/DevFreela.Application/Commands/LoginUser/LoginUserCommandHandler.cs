@@ -1,6 +1,7 @@
 ﻿using DevFreela.Application.ViewModels;
 using DevFreela.Domain.Repositories;
 using DevFreela.Domain.Services;
+using DevFreela.Domain.Services.Auth;
 using MediatR;
 using System;
 using System.Collections.Generic;

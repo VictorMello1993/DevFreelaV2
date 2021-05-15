@@ -1,8 +1,6 @@
 ﻿using DevFreela.Domain.DTOs;
 using DevFreela.Domain.Entities;
-using System;
 using System.Collections.Generic;
-using System.Text;
 using System.Threading.Tasks;
 
 namespace DevFreela.Domain.Repositories
