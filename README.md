@@ -20,5 +20,5 @@
 - [ ] Na parte de autenticação e autorização, implementar um serviço de confirmação e recuperação de senha
 - [x] Implementar a API de pagamentos
 - [x] Extrair a API de pagamentos do monolito para um microsserviço e testar usando HTTP (comunicação síncrona)
-- [ ] Implementar a comunicação assíncrona do monolito para um microsserviço usando mensageria RabitMQ
+- [x] Implementar a comunicação assíncrona do monolito para um microsserviço usando mensageria RabitMQ
 - [ ] Verificar a possibilidade de melhorar a performance da API com cache.
