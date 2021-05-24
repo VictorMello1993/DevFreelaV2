@@ -14,5 +14,6 @@ namespace DevFreela.Domain.Repositories
         Task SaveChangesAsync();
 
         Task<User> LoginAsync(string email, string passwordHash);
+        Task<User> GetByEmail(string email);
     }
 }

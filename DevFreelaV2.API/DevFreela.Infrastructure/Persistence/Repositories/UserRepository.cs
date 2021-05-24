@@ -40,6 +40,11 @@ namespace DevFreela.Infrastructure.Persistence.Repositories
             //}
         }
 
+        public async Task<User> GetByEmail(string email)
+        {
+            return await _dbContext.Users.SingleOrDefaultAsync(u => u.Email == email);
+        }
+
         public async Task<User> GetByIdAsync(int id)
         {
             //Entity Framework

@@ -6,6 +6,7 @@ using DevFreela.Application.InputModels;
 using DevFreela.Application.Queries.GetAllUsers;
 using DevFreela.Application.Queries.GetUserById;
 using DevFreela.Application.Services.Interfaces;
+using DevFreela.Application.ViewModels;
 using DevFreelaV2.API.Models;
 using MediatR;
 using Microsoft.AspNetCore.Authorization;
@@ -107,6 +108,14 @@ namespace DevFreelaV2.API.Controllers
 
             return Ok(loginUserViewModel);
 
+        }
+
+        [HttpPost("ForgotPassword")]
+        [AllowAnonymous]
+        public async Task<IActionResult> ForgotPassword(ForgotPasswordViewModel model)
+        {
+            //Chamar o command de redefinir a senha
+            return Ok();
         }
     }
 }
