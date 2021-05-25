@@ -1,9 +1,11 @@
 ﻿using DevFreela.Application.Commands.CreateUser;
 using DevFreela.Application.Commands.DeleteUser;
 using DevFreela.Application.Commands.LoginUser;
+using DevFreela.Application.Commands.RedeemPassword;
 using DevFreela.Application.Commands.UpdateUser;
 using DevFreela.Application.InputModels;
 using DevFreela.Application.Queries.GetAllUsers;
+using DevFreela.Application.Queries.GetUserByEmail;
 using DevFreela.Application.Queries.GetUserById;
 using DevFreela.Application.Services.Interfaces;
 using DevFreela.Application.ViewModels;
@@ -107,15 +109,28 @@ namespace DevFreelaV2.API.Controllers
             }
 
             return Ok(loginUserViewModel);
+        }        
 
-        }
-
-        [HttpPost("ForgotPassword")]
+        [HttpPost("forgotPassword")]
         [AllowAnonymous]
-        public async Task<IActionResult> ForgotPassword(ForgotPasswordViewModel model)
+        public async Task<IActionResult> ForgotPassword([FromBody] ForgotPasswordInputModel inputModel)
         {
-            //Chamar o command de redefinir a senha
-            return Ok();
+            var query = new GetUserByEmailQuery(inputModel.Email);
+
+            var userViewModel = await _mediator.Send(query);
+
+            if(userViewModel == null)
+            {
+                return BadRequest("Usuário não encontrado com o e-mail especificado.");
+            }
+
+            var callbackUrl = Url.Action("forgotPassword", "users", new { id = userViewModel.Id }, protocol: Request.Scheme);
+
+            var command = new RedeemPasswordCommand(userViewModel.Email, callbackUrl);
+
+            await _mediator.Send(command);
+
+            return NoContent();
         }
     }
 }
