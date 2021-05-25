@@ -1,10 +1,8 @@
 ﻿using DevFreela.Domain.Services.SendEmail;
 using Microsoft.Extensions.Configuration;
 using System;
-using System.Collections.Generic;
 using System.Net;
 using System.Net.Mail;
-using System.Text;
 
 namespace DevFreela.Infrastructure.Services.SendEmail
 {

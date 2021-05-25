@@ -12,6 +12,7 @@ using DevFreela.Application.ViewModels;
 using DevFreelaV2.API.Models;
 using MediatR;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Collections.Generic;
@@ -109,26 +110,35 @@ namespace DevFreelaV2.API.Controllers
             }
 
             return Ok(loginUserViewModel);
-        }        
+        }
 
-        [HttpPost("forgotPassword")]
+        /// <summary>
+        /// Redefinir a senha do usuário
+        /// </summary>
+        /// <remarks>
+        /// Requisição de exemplo:
+        /// {
+        ///     "email": "email@meusite.com.br"
+        ///     "newPassword": "@123456",
+        ///     "confirmPassword": "@123456"
+        /// }
+        /// </remarks>        
+        /// <param name="command">E-mail e a nova senha para atualização</param>
+        /// <returns>Booleano indicando se a senha foi alterada com sucesso ou não.</returns>
+        /// <response code="204">Senha alterada com sucesso.</response>
+        /// <response code="400">Não foi possível alterar a senha devido aos erros encontrados.</response>                
+        [HttpPut("forgotPassword")]
+        [ProducesResponseType(StatusCodes.Status204NoContent)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]        
         [AllowAnonymous]
-        public async Task<IActionResult> ForgotPassword([FromBody] ForgotPasswordInputModel inputModel)
+        public async Task<IActionResult> ForgotPassword([FromBody] RedeemPasswordCommand command)
         {
-            var query = new GetUserByEmailQuery(inputModel.Email);
+            var passwordChangedSuccessful = await _mediator.Send(command);            
 
-            var userViewModel = await _mediator.Send(query);
-
-            if(userViewModel == null)
+            if (!passwordChangedSuccessful)
             {
-                return BadRequest("Usuário não encontrado com o e-mail especificado.");
+                return BadRequest("Não foi possível redefinir a senha, pois não foi encontrado usuário com e-mail especificado.");
             }
-
-            var callbackUrl = Url.Action("forgotPassword", "users", new { id = userViewModel.Id }, protocol: Request.Scheme);
-
-            var command = new RedeemPasswordCommand(userViewModel.Email, callbackUrl);
-
-            await _mediator.Send(command);
 
             return NoContent();
         }

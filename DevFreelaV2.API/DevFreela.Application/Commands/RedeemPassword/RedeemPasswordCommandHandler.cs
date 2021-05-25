@@ -1,29 +1,38 @@
 ﻿using DevFreela.Domain.Repositories;
-using DevFreela.Domain.Services.SendEmail;
+using DevFreela.Domain.Services.Auth;
 using MediatR;
-using System;
-using System.Collections.Generic;
-using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 
 namespace DevFreela.Application.Commands.RedeemPassword
 {
-    public class RedeemPasswordCommandHandler : IRequestHandler<RedeemPasswordCommand, Unit>
+    public class RedeemPasswordCommandHandler : IRequestHandler<RedeemPasswordCommand, bool>
     {
-        private readonly IRedeemPasswordService _redeemPasswordService;
         private readonly IUserRepository _userRepository;
+        private readonly IAuthService _authRepository;
 
-        public RedeemPasswordCommandHandler(IRedeemPasswordService redeemPasswordService)
+        public RedeemPasswordCommandHandler(IUserRepository userRepository, IAuthService authRepository)
         {
-            _redeemPasswordService = redeemPasswordService;
+            _userRepository = userRepository;
+            _authRepository = authRepository;
         }
 
-        public Task<Unit> Handle(RedeemPasswordCommand request, CancellationToken cancellationToken)
-        {            
-            _redeemPasswordService.SendMailToRedeemPassword(request.Email, request.CallbackUrl);
+        public async Task<bool> Handle(RedeemPasswordCommand request, CancellationToken cancellationToken)
+        {
+            var user = await _userRepository.GetByEmail(request.Email);
 
-            return Unit.Task;
+            if(user == null)
+            {
+                return false;
+            }
+
+            var hashedPassword = _authRepository.ComputeSha256Hash(request.ConfirmPassword);
+
+            user.UpdatePassword(hashedPassword);
+
+            await _userRepository.SaveChangesAsync();
+
+            return true;
         }
     }
 }

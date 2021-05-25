@@ -57,5 +57,15 @@ namespace DevFreela.Domain.Entities
                 Active = false;
             }
         }
+
+        public void UpdatePassword(string newPassword)
+        {
+            if (!Active)
+            {
+                throw new UserIsInactiveException();
+            }
+
+            Password = newPassword;
+        }
     }
 }

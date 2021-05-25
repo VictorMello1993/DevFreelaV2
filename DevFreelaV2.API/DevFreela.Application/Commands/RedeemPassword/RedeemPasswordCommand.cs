@@ -2,15 +2,10 @@
 
 namespace DevFreela.Application.Commands.RedeemPassword
 {
-    public class RedeemPasswordCommand : IRequest<Unit>
+    public class RedeemPasswordCommand : IRequest<bool>
     {
-        public RedeemPasswordCommand(string email, string callbackUrl)
-        {
-            Email = email;
-            CallbackUrl = callbackUrl;
-        }
-
-        public string Email { get; private set; }
-        public string CallbackUrl { get; private set; }
+        public string Email { get; set; }
+        public string NewPassword { get; set; }
+        public string ConfirmPassword { get; set; }
     }
 }

@@ -15,6 +15,9 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
+using System;
+using System.IO;
+using System.Reflection;
 using System.Text;
 
 namespace DevFreelaV2.API
@@ -56,7 +59,7 @@ namespace DevFreelaV2.API
             services.AddInfrastructure();
 
             //Configuração da biblioteca MediatR (padrão CQRS)
-            services.AddMediatR(typeof(CreateProjectCommand));            
+            services.AddMediatR(typeof(CreateProjectCommand));
 
             //Teste do mecanismo de injeção de dependência para verificar se o estado do objeto foi alterado para cada requisição através do padrão Singleton (uma instância por aplicação)
             //services.AddSingleton<ExampleClass>(e => new ExampleClass { Name = "Initial Stage" });
@@ -69,7 +72,16 @@ namespace DevFreelaV2.API
 
             services.AddSwaggerGen(c =>
             {
-                c.SwaggerDoc("v1", new OpenApiInfo { Title = "DevFreelaV2.API", Version = "v1" });
+                c.SwaggerDoc("v1", new OpenApiInfo
+                {
+                    Title = "DevFreelaV2.API",
+                    Version = "v1",                    
+                });
+
+                var xmlFile = $"{Assembly.GetExecutingAssembly().GetName().Name}.xml";
+                var xmlPath = Path.Combine(AppContext.BaseDirectory, xmlFile);
+
+                c.IncludeXmlComments(xmlPath);
 
                 c.AddSecurityDefinition("Bearer", new OpenApiSecurityScheme
                 {
@@ -94,8 +106,8 @@ namespace DevFreelaV2.API
                              },
                              new string[] {}
                      }
-                 });
-            });            
+                 });                
+            });
 
             services
               .AddAuthentication(JwtBearerDefaults.AuthenticationScheme) //Esquema de autenticação padrão: Bearer
